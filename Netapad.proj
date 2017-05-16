@@ -8,6 +8,7 @@
     <ItemGroup>
         <ApplicationDefinition Include="Netapad.xaml" />
         <Page Include="Window.xaml" />
+        <Compile Include="Window.xaml.cs" />
 
         <Reference Include="System" />
         <Reference Include="WindowsBase" />
