@@ -1,10 +1,12 @@
+using System;
 using System.Windows;
 
-public partial class Netapad : Application
+public class Netapad : Application
 {
-    void Netapad_Startup(object sender, StartupEventArgs e)
+    [STAThread]
+    static void Main()
     {
-        NetapadWindow w = new NetapadWindow();
-        w.Show();
+        Netapad app = new Netapad();
+        app.Run(new NetapadWindow());
     }
 }

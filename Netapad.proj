@@ -6,9 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ApplicationDefinition Include="Netapad.xaml" />
         <Compile Include="Netapad.cs" />
-        <Compile Include="Window.xaml.cs" />
+        <Compile Include="Window.cs" />
 
         <Reference Include="System" />
         <Reference Include="WindowsBase" />
