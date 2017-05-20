@@ -1,7 +1,10 @@
-class Netapad
+using System.Windows;
+
+public partial class Netapad : Application
 {
-    static void Main()
+    void Netapad_Startup(object sender, StartupEventArgs e)
     {
-        System.Console.WriteLine("Hello");
+        NetapadWindow w = new NetapadWindow();
+        w.Show();
     }
 }
