@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>Netapad</AssemblyName>
         <OutputType>winexe</OutputType>
-        <OutputPath>.\</OutputPath>
+        <OutputPath>.\bin</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
