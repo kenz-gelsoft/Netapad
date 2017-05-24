@@ -1,12 +1,15 @@
 using System;
 using System.Windows;
 
-public class Netapad : Application
+namespace Netapad
 {
-    [STAThread]
-    static void Main()
+    class App : Application
     {
-        var app = new Netapad();
-        app.Run(new NetapadWindow());
+        [STAThread]
+        static void Main()
+        {
+            var app = new App();
+            app.Run(new EditorWindow());
+        }
     }
 }
