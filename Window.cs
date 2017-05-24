@@ -1,19 +1,37 @@
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 
 public class NetapadWindow : Window
 {
+    TextBox textBox = new TextBox();
+
+    private string filePath = null;
+    string FilePath {
+        get { return filePath; }
+        set {
+            filePath = value;
+            UpdateTitle();
+        }
+    }
+
+    private void UpdateTitle()
+    {
+        string fileName = filePath != null ? Path.GetFileName(filePath) : "無題";
+        Title = fileName + " - ネタ帳";
+    }
+
     public NetapadWindow()
     {
-        this.Title = "ネタ帳";
+        UpdateTitle();
 
         DockPanel panel = new DockPanel();
 
         panel.Children.Add(BuildMenuBar());
 
-        TextBox textBox = new TextBox();
         textBox.AcceptsReturn = true;
         panel.Children.Add(textBox);
 
@@ -30,13 +48,38 @@ public class NetapadWindow : Window
     }
 
     void NewCmdExecuted(object target, ExecutedRoutedEventArgs e)
-    {}
+    {
+        textBox.Text = "";
+        FilePath = null;
+    }
     void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
-    {}
+    {
+        OpenFileDialog dialog = new OpenFileDialog();
+        if (dialog.ShowDialog() == true) {
+            textBox.Text = File.ReadAllText(dialog.FileName);
+            FilePath = dialog.FileName;
+        }
+    }
     void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
-    {}
+    {
+        if (FilePath == null) {
+            SaveAsCmdExecuted(target, e);
+        } else {
+            SaveTo(filePath);
+        }
+    }
     void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
-    {}
+    {
+        SaveFileDialog dialog = new SaveFileDialog();
+        if (dialog.ShowDialog() == true) {
+            SaveTo(dialog.FileName);
+        }
+    }
+    void SaveTo(string fileName)
+    {
+        File.WriteAllText(fileName, textBox.Text);
+        FilePath = fileName;
+    }
     void AlwaysCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
         e.CanExecute = true;
