@@ -20,7 +20,7 @@ public class NetapadWindow : Window
 
     private void UpdateTitle()
     {
-        string fileName = filePath != null ? Path.GetFileName(filePath) : "無題";
+        var fileName = filePath != null ? Path.GetFileName(filePath) : "無題";
         Title = fileName + " - ネタ帳";
     }
 
@@ -28,7 +28,7 @@ public class NetapadWindow : Window
     {
         UpdateTitle();
 
-        DockPanel panel = new DockPanel();
+        var panel = new DockPanel();
 
         panel.Children.Add(BuildMenuBar());
 
@@ -54,7 +54,7 @@ public class NetapadWindow : Window
     }
     void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
     {
-        OpenFileDialog dialog = new OpenFileDialog();
+        var dialog = new OpenFileDialog();
         if (dialog.ShowDialog() == true) {
             textBox.Text = File.ReadAllText(dialog.FileName);
             FilePath = dialog.FileName;
@@ -70,7 +70,7 @@ public class NetapadWindow : Window
     }
     void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
     {
-        SaveFileDialog dialog = new SaveFileDialog();
+        var dialog = new SaveFileDialog();
         if (dialog.ShowDialog() == true) {
             SaveTo(dialog.FileName);
         }
@@ -103,7 +103,7 @@ public class NetapadWindow : Window
 
     Menu BuildMenuBar()
     {
-        Menu menuBar = new Menu();
+        var menuBar = new Menu();
         DockPanel.SetDock(menuBar, Dock.Top);
 
         MenuDefinition[] menus = {
@@ -138,7 +138,7 @@ public class NetapadWindow : Window
 
         foreach (var menuDef in menus)
         {
-            MenuItem menu = new MenuItem();
+            var menu = new MenuItem();
             menu.Header = menuDef.Item1;
 
             foreach (var item in menuDef.Item2)
@@ -147,7 +147,7 @@ public class NetapadWindow : Window
                     menu.Items.Add(new Separator());
                     continue;
                 }
-                MenuItem menuItem = new MenuItem();
+                var menuItem = new MenuItem();
                 menuItem.Header = item.Item1;
                 menuItem.Command = item.Item2;
                 menu.Items.Add(menuItem);
