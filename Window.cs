@@ -18,6 +18,28 @@ public class NetapadWindow : Window
         panel.Children.Add(textBox);
 
         this.Content = panel;
+
+        this.CommandBindings.Add(new CommandBinding(
+            ApplicationCommands.New, NewCmdExecuted, AlwaysCanExecute));
+        this.CommandBindings.Add(new CommandBinding(
+            ApplicationCommands.Open, OpenCmdExecuted, AlwaysCanExecute));
+        this.CommandBindings.Add(new CommandBinding(
+            ApplicationCommands.Save, SaveCmdExecuted, AlwaysCanExecute));
+        this.CommandBindings.Add(new CommandBinding(
+            ApplicationCommands.SaveAs, SaveAsCmdExecuted, AlwaysCanExecute));
+    }
+
+    void NewCmdExecuted(object target, ExecutedRoutedEventArgs e)
+    {}
+    void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
+    {}
+    void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
+    {}
+    void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
+    {}
+    void AlwaysCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = true;
     }
 
     class MenuDefinition : Tuple<string, MenuItemDefinition[]>
