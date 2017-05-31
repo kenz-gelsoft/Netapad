@@ -7,9 +7,17 @@ using Microsoft.Win32;
 
 namespace Netapad
 {
-    class EditorWindow : Window
+    class EditorWindow
     {
-        TextBox textBox = new TextBox();
+        IWindow  window  = new WpfWindow();
+        ITextBox textBox = new WpfTextBox();
+
+        public Window Native
+        {
+            get {
+                return window.Handle as Window;
+            }
+        }
 
         private string filePath = null;
         string FilePath {
@@ -23,38 +31,37 @@ namespace Netapad
         private void UpdateTitle()
         {
             var fileName = filePath != null ? Path.GetFileName(filePath) : "無題";
-            Title = fileName + " - ネタ帳";
+            window.Title = fileName + " - ネタ帳";
         }
 
         public EditorWindow()
         {
             UpdateTitle();
 
-            var panel = new DockPanel();
+            window.Add(BuildMenuBar());
+            window.Add(textBox);
 
-            panel.Children.Add(BuildMenuBar());
-
-            textBox.AcceptsReturn = true;
-            panel.Children.Add(textBox);
-
-            this.Content = panel;
-
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.New, NewCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.Open, OpenCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.Save, SaveCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.SaveAs, SaveAsCmdExecuted, AlwaysCanExecute));
+            WpfCommandBinding[] bindings = {
+                new WpfCommandBinding(ApplicationCommands.New,
+                    NewCmdExecuted, AlwaysCanExecute),
+                new WpfCommandBinding(ApplicationCommands.Open,
+                    OpenCmdExecuted, AlwaysCanExecute),
+                new WpfCommandBinding(ApplicationCommands.Save,
+                    SaveCmdExecuted, AlwaysCanExecute),
+                new WpfCommandBinding(ApplicationCommands.SaveAs,
+                    SaveAsCmdExecuted, AlwaysCanExecute),
+            };
+            foreach (var binding in bindings) {
+                window.AddCommandBinding(binding);
+            }
         }
 
-        void NewCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void NewCmdExecuted(object target, IExecutedEventArgs e)
         {
             textBox.Text = "";
             FilePath = null;
         }
-        void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void OpenCmdExecuted(object target, IExecutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             if (dialog.ShowDialog() == true) {
@@ -62,7 +69,7 @@ namespace Netapad
                 FilePath = dialog.FileName;
             }
         }
-        void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void SaveCmdExecuted(object target, IExecutedEventArgs e)
         {
             if (FilePath == null) {
                 SaveAsCmdExecuted(target, e);
@@ -70,7 +77,7 @@ namespace Netapad
                 SaveTo(filePath);
             }
         }
-        void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void SaveAsCmdExecuted(object target, IExecutedEventArgs e)
         {
             var dialog = new SaveFileDialog();
             if (dialog.ShowDialog() == true) {
@@ -82,32 +89,13 @@ namespace Netapad
             File.WriteAllText(fileName, textBox.Text);
             FilePath = fileName;
         }
-        void AlwaysCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        void AlwaysCanExecute(object sender, ICanExecuteEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        class MenuDefinition : Tuple<string, MenuItemDefinition[]>
+        IMenuBar BuildMenuBar()
         {
-            public MenuDefinition(string s, MenuItemDefinition[] items) : base(s, items) {}
-        }
-
-        class MenuItemDefinition : Tuple<string, ICommand>
-        {
-            static MenuItemDefinition separator = new MenuItemDefinition("", null);
-            public static MenuItemDefinition Separator {
-                get {
-                    return separator;
-                }
-            }
-            public MenuItemDefinition(string s, ICommand c) : base(s, c) {}
-        }
-
-        Menu BuildMenuBar()
-        {
-            var menuBar = new Menu();
-            DockPanel.SetDock(menuBar, Dock.Top);
-
             MenuDefinition[] menus = {
                 new MenuDefinition("ファイル(_F)", new MenuItemDefinition[] {
                     new MenuItemDefinition("新規(_N)", ApplicationCommands.New),
@@ -115,10 +103,10 @@ namespace Netapad
                     new MenuItemDefinition("上書き保存(_S)", ApplicationCommands.Save),
                     new MenuItemDefinition("名前を付けて保存(_A)...", ApplicationCommands.SaveAs),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(this)),
+                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(Native)),
                     new MenuItemDefinition("印刷(_P)...", ApplicationCommands.Print),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(this)),
+                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(Native)),
                 }),
                 new MenuDefinition("編集(_E)", new MenuItemDefinition[] {
                     new MenuItemDefinition("元に戻す(_U)", ApplicationCommands.Undo),
@@ -129,35 +117,16 @@ namespace Netapad
                     new MenuItemDefinition("削除(_L)", ApplicationCommands.Delete),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("検索(_F)...", ApplicationCommands.Find),
-                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(this)),
+                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(Native)),
                     new MenuItemDefinition("置換(_R)...", ApplicationCommands.Replace),
-                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(this)),
+                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(Native)),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("すべて選択(_A)", ApplicationCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(this)),
+                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(Native)),
                 }),
             };
 
-            foreach (var menuDef in menus)
-            {
-                var menu = new MenuItem();
-                menu.Header = menuDef.Item1;
-
-                foreach (var item in menuDef.Item2)
-                {
-                    if (item == MenuItemDefinition.Separator) {
-                        menu.Items.Add(new Separator());
-                        continue;
-                    }
-                    var menuItem = new MenuItem();
-                    menuItem.Header = item.Item1;
-                    menuItem.Command = item.Item2;
-                    menu.Items.Add(menuItem);
-                }
-
-                menuBar.Items.Add(menu);
-            }
-            return menuBar;
+            return new WpfMenuBar(menus);
         }
 
         class PageSettingsCommand : WindowCommand

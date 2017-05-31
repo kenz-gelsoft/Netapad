@@ -9,7 +9,8 @@ namespace Netapad
         static void Main()
         {
             var app = new App();
-            app.Run(new EditorWindow());
+            var win = new EditorWindow();
+            app.Run(win.Native);
         }
     }
 }
