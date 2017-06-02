@@ -13,6 +13,7 @@
         <Compile Include="IOpenDialog.cs" />
         <Compile Include="ISaveDialog.cs" />
         <Compile Include="ITextBox.cs" />
+        <Compile Include="IToolkit.cs" />
         <Compile Include="IWindow.cs" />
         <Compile Include="Netapad.cs" />
         <Compile Include="Window.cs" />
@@ -21,6 +22,7 @@
         <Compile Include="WpfOpenDialog.cs" />
         <Compile Include="WpfSaveDialog.cs" />
         <Compile Include="WpfTextBox.cs" />
+        <Compile Include="WpfToolkit.cs" />
         <Compile Include="WpfWindow.cs" />
 
         <Reference Include="System" />

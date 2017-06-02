@@ -9,7 +9,8 @@ namespace Netapad
         static void Main()
         {
             var app = new App();
-            var win = new EditorWindow();
+            var toolkit = new WpfToolkit();
+            var win = new EditorWindow(toolkit);
             app.Run(win.Handle as Window);
         }
     }

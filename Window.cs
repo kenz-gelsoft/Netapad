@@ -6,8 +6,10 @@ namespace Netapad
 {
     class EditorWindow
     {
-        IWindow  window  = new WpfWindow();
-        ITextBox textBox = new WpfTextBox();
+        IToolkit toolkit;
+        
+        IWindow  window;
+        ITextBox textBox;
 
         public object Handle
         {
@@ -31,21 +33,25 @@ namespace Netapad
             window.Title = fileName + " - ネタ帳";
         }
 
-        public EditorWindow()
+        public EditorWindow(IToolkit aToolkit)
         {
+            toolkit = aToolkit;
+            window  = aToolkit.NewWindow();
+            textBox = aToolkit.NewTextBox();
+
             UpdateTitle();
 
             window.Add(BuildMenuBar());
             window.Add(textBox);
 
-            WpfCommandBinding[] bindings = {
-                new WpfCommandBinding(ApplicationCommands.New,
+            ICommandBinding[] bindings = {
+                toolkit.NewCommandBinding(ApplicationCommands.New,
                     NewCmdExecuted, AlwaysCanExecute),
-                new WpfCommandBinding(ApplicationCommands.Open,
+                toolkit.NewCommandBinding(ApplicationCommands.Open,
                     OpenCmdExecuted, AlwaysCanExecute),
-                new WpfCommandBinding(ApplicationCommands.Save,
+                toolkit.NewCommandBinding(ApplicationCommands.Save,
                     SaveCmdExecuted, AlwaysCanExecute),
-                new WpfCommandBinding(ApplicationCommands.SaveAs,
+                toolkit.NewCommandBinding(ApplicationCommands.SaveAs,
                     SaveAsCmdExecuted, AlwaysCanExecute),
             };
             foreach (var binding in bindings) {
@@ -60,7 +66,7 @@ namespace Netapad
         }
         void OpenCmdExecuted(object target, IExecutedEventArgs e)
         {
-            IOpenDialog dialog = new WpfOpenDialog();
+            IOpenDialog dialog = toolkit.NewOpenDialog();
             if (dialog.ShowDialog() == true) {
                 textBox.Text = File.ReadAllText(dialog.FileName);
                 FilePath = dialog.FileName;
@@ -76,7 +82,7 @@ namespace Netapad
         }
         void SaveAsCmdExecuted(object target, IExecutedEventArgs e)
         {
-            ISaveDialog dialog = new WpfSaveDialog();
+            ISaveDialog dialog = toolkit.NewSaveDialog();
             if (dialog.ShowDialog() == true) {
                 SaveTo(dialog.FileName);
             }
@@ -123,7 +129,7 @@ namespace Netapad
                 }),
             };
 
-            return new WpfMenuBar(menus);
+            return toolkit.NewMenuBar(menus);
         }
 
         class PageSettingsCommand : WindowCommand
