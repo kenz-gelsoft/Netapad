@@ -10,12 +10,16 @@
         <Compile Include="ICommandBinding.cs" />
         <Compile Include="IControl.cs" />
         <Compile Include="IMenuBar.cs" />
+        <Compile Include="IOpenDialog.cs" />
+        <Compile Include="ISaveDialog.cs" />
         <Compile Include="ITextBox.cs" />
         <Compile Include="IWindow.cs" />
         <Compile Include="Netapad.cs" />
         <Compile Include="Window.cs" />
         <Compile Include="WpfCommandBinding.cs" />
         <Compile Include="WpfMenuBar.cs" />
+        <Compile Include="WpfOpenDialog.cs" />
+        <Compile Include="WpfSaveDialog.cs" />
         <Compile Include="WpfTextBox.cs" />
         <Compile Include="WpfWindow.cs" />
 

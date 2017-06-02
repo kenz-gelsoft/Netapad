@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 namespace Netapad
 {
@@ -61,7 +60,7 @@ namespace Netapad
         }
         void OpenCmdExecuted(object target, IExecutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
+            IOpenDialog dialog = new WpfOpenDialog();
             if (dialog.ShowDialog() == true) {
                 textBox.Text = File.ReadAllText(dialog.FileName);
                 FilePath = dialog.FileName;
@@ -77,7 +76,7 @@ namespace Netapad
         }
         void SaveAsCmdExecuted(object target, IExecutedEventArgs e)
         {
-            var dialog = new SaveFileDialog();
+            ISaveDialog dialog = new WpfSaveDialog();
             if (dialog.ShowDialog() == true) {
                 SaveTo(dialog.FileName);
             }
