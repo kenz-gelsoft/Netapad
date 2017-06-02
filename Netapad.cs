@@ -10,7 +10,7 @@ namespace Netapad
         {
             var app = new App();
             var win = new EditorWindow();
-            app.Run(win.Native);
+            app.Run(win.Handle as Window);
         }
     }
 }

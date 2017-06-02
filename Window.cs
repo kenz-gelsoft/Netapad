@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -12,10 +10,10 @@ namespace Netapad
         IWindow  window  = new WpfWindow();
         ITextBox textBox = new WpfTextBox();
 
-        public Window Native
+        public object Handle
         {
             get {
-                return window.Handle as Window;
+                return window.Handle;
             }
         }
 
@@ -103,10 +101,10 @@ namespace Netapad
                     new MenuItemDefinition("上書き保存(_S)", ApplicationCommands.Save),
                     new MenuItemDefinition("名前を付けて保存(_A)...", ApplicationCommands.SaveAs),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(Native)),
+                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(window)),
                     new MenuItemDefinition("印刷(_P)...", ApplicationCommands.Print),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(Native)),
+                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(window)),
                 }),
                 new MenuDefinition("編集(_E)", new MenuItemDefinition[] {
                     new MenuItemDefinition("元に戻す(_U)", ApplicationCommands.Undo),
@@ -117,12 +115,12 @@ namespace Netapad
                     new MenuItemDefinition("削除(_L)", ApplicationCommands.Delete),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("検索(_F)...", ApplicationCommands.Find),
-                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(Native)),
+                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(window)),
                     new MenuItemDefinition("置換(_R)...", ApplicationCommands.Replace),
-                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(Native)),
+                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(window)),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("すべて選択(_A)", ApplicationCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(Native)),
+                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(window)),
                 }),
             };
 
@@ -131,7 +129,7 @@ namespace Netapad
 
         class PageSettingsCommand : WindowCommand
         {
-            public PageSettingsCommand(Window w) : base(w) {}
+            public PageSettingsCommand(IWindow w) : base(w) {}
             public override void Execute(object parameter)
             {
                 // TODO
@@ -139,7 +137,7 @@ namespace Netapad
         }
         class ExitCommand : WindowCommand
         {
-            public ExitCommand(Window w) : base(w) {}
+            public ExitCommand(IWindow w) : base(w) {}
             public override void Execute(object parameter)
             {
                 window.Close();
@@ -147,7 +145,7 @@ namespace Netapad
         }
         class FindNextCommand : WindowCommand
         {
-            public FindNextCommand(Window w) : base(w) {}
+            public FindNextCommand(IWindow w) : base(w) {}
             public override void Execute(object parameter)
             {
                 // TODO
@@ -155,7 +153,7 @@ namespace Netapad
         }
         class GotoCommand : WindowCommand
         {
-            public GotoCommand(Window w) : base(w) {}
+            public GotoCommand(IWindow w) : base(w) {}
             public override void Execute(object parameter)
             {
                 // TODO
@@ -163,7 +161,7 @@ namespace Netapad
         }
         class DateTimeCommand : WindowCommand
         {
-            public DateTimeCommand(Window w) : base(w) {}
+            public DateTimeCommand(IWindow w) : base(w) {}
             public override void Execute(object parameter)
             {
                 // TODO
@@ -174,8 +172,8 @@ namespace Netapad
         {
             public event EventHandler CanExecuteChanged { add {} remove {} }
 
-            protected Window window;
-            public WindowCommand(Window w)
+            protected IWindow window;
+            public WindowCommand(IWindow w)
             {
                 window = w;
             }

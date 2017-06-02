@@ -35,5 +35,10 @@ namespace Netapad
         {
             window.CommandBindings.Add(a.Handle as CommandBinding);
         }
+
+        public void Close()
+        {
+            window.Close();
+        }
     }
 }
