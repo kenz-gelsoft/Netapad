@@ -4,18 +4,18 @@ namespace Netapad
 {
     class WpfOpenDialog : IOpenDialog
     {
-        OpenFileDialog d = new OpenFileDialog();
+        OpenFileDialog dialog = new OpenFileDialog();
 
         public string FileName
         {
             get {
-                return d.FileName;
+                return dialog.FileName;
             }
         }
 
         public bool? ShowDialog()
         {
-            return d.ShowDialog();
+            return dialog.ShowDialog();
         }
     }
 }

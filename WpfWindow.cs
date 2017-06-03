@@ -31,9 +31,9 @@ namespace Netapad
             panel.Children.Add(aControl.Handle as Control);
         }
 
-        public void AddCommandBinding(ICommandBinding a)
+        public void AddCommandBinding(ICommandBinding aBinding)
         {
-            window.CommandBindings.Add(a.Handle as CommandBinding);
+            window.CommandBindings.Add(aBinding.Handle as CommandBinding);
         }
 
         public void Close()

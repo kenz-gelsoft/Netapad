@@ -4,29 +4,29 @@ namespace Netapad
 {
     class WpfExecutedEventArgs : IExecutedEventArgs, IControl
     {
-        ExecutedRoutedEventArgs e;
+        ExecutedRoutedEventArgs args;
         public object Handle {
-            get { return e; }
+            get { return args; }
         }
 
-        public WpfExecutedEventArgs(ExecutedRoutedEventArgs e) {
-            this.e = e;
+        public WpfExecutedEventArgs(ExecutedRoutedEventArgs aArgs) {
+            this.args = aArgs;
         }
     }
     class WpfCanExecuteEventArgs : ICanExecuteEventArgs, IControl
     {
-        CanExecuteRoutedEventArgs e;
+        CanExecuteRoutedEventArgs args;
         public object Handle {
-            get { return e; }
+            get { return args; }
         }
 
         public bool CanExecute {
-            get { return e.CanExecute; }
-            set { e.CanExecute = value; }
+            get { return args.CanExecute; }
+            set { args.CanExecute = value; }
         }
 
-        public WpfCanExecuteEventArgs(CanExecuteRoutedEventArgs e) {
-            this.e = e;
+        public WpfCanExecuteEventArgs(CanExecuteRoutedEventArgs aArgs) {
+            this.args = aArgs;
         }
     }
 
@@ -39,20 +39,20 @@ namespace Netapad
 
         ExecutedEventHandler mExecuted;
         CanExecuteEventHandler mCanExecute;
-        public WpfCommandBinding(ICommand cmd, ExecutedEventHandler executed, CanExecuteEventHandler canExecute)
+        public WpfCommandBinding(ICommand aCommand, ExecutedEventHandler aExecuted, CanExecuteEventHandler aCanExecute)
         {
-            mExecuted   = executed;
-            mCanExecute = canExecute;
-            binding = new CommandBinding(cmd, Executed, CanExecute);
+            mExecuted   = aExecuted;
+            mCanExecute = aCanExecute;
+            binding = new CommandBinding(aCommand, Executed, CanExecute);
         }
 
-        public void Executed(object sender, ExecutedRoutedEventArgs e)
+        public void Executed(object aSender, ExecutedRoutedEventArgs aArgs)
         {
-            mExecuted(sender, new WpfExecutedEventArgs(e));
+            mExecuted(aSender, new WpfExecutedEventArgs(aArgs));
         }
-        public void CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        public void CanExecute(object aSender, CanExecuteRoutedEventArgs aArgs)
         {
-            mCanExecute(sender, new WpfCanExecuteEventArgs(e));
+            mCanExecute(aSender, new WpfCanExecuteEventArgs(aArgs));
         }
     }
 }

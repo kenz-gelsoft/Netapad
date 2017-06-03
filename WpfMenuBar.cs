@@ -6,7 +6,7 @@ namespace Netapad
 {
     class MenuDefinition : Tuple<string, MenuItemDefinition[]>
     {
-        public MenuDefinition(string s, MenuItemDefinition[] items) : base(s, items) {}
+        public MenuDefinition(string aLabel, MenuItemDefinition[] aItems) : base(aLabel, aItems) {}
     }
 
     // TODO: make ICommand xp
@@ -18,7 +18,7 @@ namespace Netapad
                 return separator;
             }
         }
-        public MenuItemDefinition(string s, ICommand c) : base(s, c) {}
+        public MenuItemDefinition(string aLabel, ICommand aCommand) : base(aLabel, aCommand) {}
     }
 
     class WpfMenuBar : IMenuBar
@@ -28,10 +28,10 @@ namespace Netapad
             get { return menuBar; }
         }
 
-        public WpfMenuBar(MenuDefinition[] menus)
+        public WpfMenuBar(MenuDefinition[] aMenus)
         {
             DockPanel.SetDock(menuBar, Dock.Top);
-            foreach (var menuDef in menus)
+            foreach (var menuDef in aMenus)
             {
                 var menu = new MenuItem();
                 menu.Header = menuDef.Item1;

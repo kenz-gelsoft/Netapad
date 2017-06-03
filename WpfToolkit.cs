@@ -16,9 +16,9 @@ namespace Netapad
         {
             return new WpfTextBox();
         }
-        public ICommandBinding NewCommandBinding(ICommand cmd, ExecutedEventHandler executed, CanExecuteEventHandler canExecute)
+        public ICommandBinding NewCommandBinding(ICommand aCommand, ExecutedEventHandler aExecuted, CanExecuteEventHandler aCanExecute)
         {
-            return new WpfCommandBinding(cmd, executed, canExecute);
+            return new WpfCommandBinding(aCommand, aExecuted, aCanExecute);
         }
         public IOpenDialog NewOpenDialog()
         {

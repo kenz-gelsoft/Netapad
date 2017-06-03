@@ -7,7 +7,7 @@ namespace Netapad
         IWindow  NewWindow();
         IMenuBar NewMenuBar(MenuDefinition[] aMenus);
         ITextBox NewTextBox();
-        ICommandBinding NewCommandBinding(ICommand cmd, ExecutedEventHandler executed, CanExecuteEventHandler canExecute);
+        ICommandBinding NewCommandBinding(ICommand aCommand, ExecutedEventHandler aExecuted, CanExecuteEventHandler aCanExecute);
         IOpenDialog NewOpenDialog();
         ISaveDialog NewSaveDialog();
     }

@@ -7,7 +7,7 @@ namespace Netapad
     class EditorWindow
     {
         IToolkit toolkit;
-        
+
         IWindow  window;
         ITextBox textBox;
 
@@ -59,12 +59,12 @@ namespace Netapad
             }
         }
 
-        void NewCmdExecuted(object target, IExecutedEventArgs e)
+        void NewCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             textBox.Text = "";
             FilePath = null;
         }
-        void OpenCmdExecuted(object target, IExecutedEventArgs e)
+        void OpenCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             IOpenDialog dialog = toolkit.NewOpenDialog();
             if (dialog.ShowDialog() == true) {
@@ -72,29 +72,29 @@ namespace Netapad
                 FilePath = dialog.FileName;
             }
         }
-        void SaveCmdExecuted(object target, IExecutedEventArgs e)
+        void SaveCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             if (FilePath == null) {
-                SaveAsCmdExecuted(target, e);
+                SaveAsCmdExecuted(aTarget, aArgs);
             } else {
                 SaveTo(filePath);
             }
         }
-        void SaveAsCmdExecuted(object target, IExecutedEventArgs e)
+        void SaveAsCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             ISaveDialog dialog = toolkit.NewSaveDialog();
             if (dialog.ShowDialog() == true) {
                 SaveTo(dialog.FileName);
             }
         }
-        void SaveTo(string fileName)
+        void SaveTo(string aFileName)
         {
-            File.WriteAllText(fileName, textBox.Text);
-            FilePath = fileName;
+            File.WriteAllText(aFileName, textBox.Text);
+            FilePath = aFileName;
         }
-        void AlwaysCanExecute(object sender, ICanExecuteEventArgs e)
+        void AlwaysCanExecute(object aSender, ICanExecuteEventArgs aArgs)
         {
-            e.CanExecute = true;
+            aArgs.CanExecute = true;
         }
 
         IMenuBar BuildMenuBar()
@@ -134,40 +134,40 @@ namespace Netapad
 
         class PageSettingsCommand : WindowCommand
         {
-            public PageSettingsCommand(IWindow w) : base(w) {}
-            public override void Execute(object parameter)
+            public PageSettingsCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class ExitCommand : WindowCommand
         {
-            public ExitCommand(IWindow w) : base(w) {}
-            public override void Execute(object parameter)
+            public ExitCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 window.Close();
             }
         }
         class FindNextCommand : WindowCommand
         {
-            public FindNextCommand(IWindow w) : base(w) {}
-            public override void Execute(object parameter)
+            public FindNextCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class GotoCommand : WindowCommand
         {
-            public GotoCommand(IWindow w) : base(w) {}
-            public override void Execute(object parameter)
+            public GotoCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class DateTimeCommand : WindowCommand
         {
-            public DateTimeCommand(IWindow w) : base(w) {}
-            public override void Execute(object parameter)
+            public DateTimeCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
@@ -178,16 +178,16 @@ namespace Netapad
             public event EventHandler CanExecuteChanged { add {} remove {} }
 
             protected IWindow window;
-            public WindowCommand(IWindow w)
+            public WindowCommand(IWindow aWindow)
             {
-                window = w;
+                window = aWindow;
             }
 
-            public bool CanExecute(object parameter)
+            public bool CanExecute(object aParameter)
             {
                 return true;
             }
-            public abstract void Execute(object parameter);
+            public abstract void Execute(object aParameter);
         }
     }
 }

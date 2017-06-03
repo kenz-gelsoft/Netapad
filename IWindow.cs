@@ -4,7 +4,7 @@ namespace Netapad
     {
         string Title { get; set; }
         void Add(IControl aControl);
-        void AddCommandBinding(ICommandBinding a);
+        void AddCommandBinding(ICommandBinding aBinding);
 
         void Close();
     }

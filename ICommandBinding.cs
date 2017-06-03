@@ -7,8 +7,8 @@ namespace Netapad
         bool CanExecute { get; set; }
     }
 
-    delegate void ExecutedEventHandler(object sender, IExecutedEventArgs e);
-    delegate void CanExecuteEventHandler(object sender, ICanExecuteEventArgs e);
+    delegate void ExecutedEventHandler(object aSender, IExecutedEventArgs aArgs);
+    delegate void CanExecuteEventHandler(object aSender, ICanExecuteEventArgs aArgs);
 
     interface ICommandBinding : IControl
     {}

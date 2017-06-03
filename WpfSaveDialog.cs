@@ -4,16 +4,16 @@ namespace Netapad
 {
     class WpfSaveDialog : ISaveDialog
     {
-        SaveFileDialog d = new SaveFileDialog();
+        SaveFileDialog dialog = new SaveFileDialog();
         public string FileName {
             get {
-                return d.FileName;
+                return dialog.FileName;
             }
         }
 
         public bool? ShowDialog()
         {
-            return d.ShowDialog();
+            return dialog.ShowDialog();
         }
     }
 }
