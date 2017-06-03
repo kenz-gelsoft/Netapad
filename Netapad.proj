@@ -7,6 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="ifs\ICommandBinding.cs" />
+        <Compile Include="ifs\IControl.cs" />
+        <Compile Include="ifs\IMenuBar.cs" />
+        <Compile Include="ifs\IOpenDialog.cs" />
+        <Compile Include="ifs\ISaveDialog.cs" />
+        <Compile Include="ifs\ITextBox.cs" />
+        <Compile Include="ifs\IToolkit.cs" />
+        <Compile Include="ifs\IWindow.cs" />
+        
+        <Compile Include="wpf\WpfCommandBinding.cs" />
+        <Compile Include="wpf\WpfMenuBar.cs" />
+        <Compile Include="wpf\WpfOpenDialog.cs" />
+        <Compile Include="wpf\WpfSaveDialog.cs" />
+        <Compile Include="wpf\WpfTextBox.cs" />
+        <Compile Include="wpf\WpfToolkit.cs" />
+        <Compile Include="wpf\WpfWindow.cs" />
+
         <Compile Include="Netapad.cs" />
         <Compile Include="Window.cs" />
 

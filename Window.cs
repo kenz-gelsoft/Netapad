@@ -1,15 +1,22 @@
 using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 namespace Netapad
 {
-    class EditorWindow : Window
+    class EditorWindow
     {
-        TextBox textBox = new TextBox();
+        IToolkit toolkit;
+
+        IWindow  window;
+        ITextBox textBox;
+
+        public object Handle
+        {
+            get {
+                return window.Handle;
+            }
+        }
 
         private string filePath = null;
         string FilePath {
@@ -23,91 +30,75 @@ namespace Netapad
         private void UpdateTitle()
         {
             var fileName = filePath != null ? Path.GetFileName(filePath) : "無題";
-            Title = fileName + " - ネタ帳";
+            window.Title = fileName + " - ネタ帳";
         }
 
-        public EditorWindow()
+        public EditorWindow(IToolkit aToolkit)
         {
+            toolkit = aToolkit;
+            window  = aToolkit.NewWindow();
+            textBox = aToolkit.NewTextBox();
+
             UpdateTitle();
 
-            var panel = new DockPanel();
+            window.Add(BuildMenuBar());
+            window.Add(textBox);
 
-            panel.Children.Add(BuildMenuBar());
-
-            textBox.AcceptsReturn = true;
-            panel.Children.Add(textBox);
-
-            this.Content = panel;
-
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.New, NewCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.Open, OpenCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.Save, SaveCmdExecuted, AlwaysCanExecute));
-            this.CommandBindings.Add(new CommandBinding(
-                ApplicationCommands.SaveAs, SaveAsCmdExecuted, AlwaysCanExecute));
+            ICommandBinding[] bindings = {
+                toolkit.NewCommandBinding(ApplicationCommands.New,
+                    NewCmdExecuted, AlwaysCanExecute),
+                toolkit.NewCommandBinding(ApplicationCommands.Open,
+                    OpenCmdExecuted, AlwaysCanExecute),
+                toolkit.NewCommandBinding(ApplicationCommands.Save,
+                    SaveCmdExecuted, AlwaysCanExecute),
+                toolkit.NewCommandBinding(ApplicationCommands.SaveAs,
+                    SaveAsCmdExecuted, AlwaysCanExecute),
+            };
+            foreach (var binding in bindings) {
+                window.AddCommandBinding(binding);
+            }
         }
 
-        void NewCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void NewCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             textBox.Text = "";
             FilePath = null;
         }
-        void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void OpenCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
-            var dialog = new OpenFileDialog();
+            IOpenDialog dialog = toolkit.NewOpenDialog();
             if (dialog.ShowDialog() == true) {
                 textBox.Text = File.ReadAllText(dialog.FileName);
                 FilePath = dialog.FileName;
             }
         }
-        void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void SaveCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
             if (FilePath == null) {
-                SaveAsCmdExecuted(target, e);
+                SaveAsCmdExecuted(aTarget, aArgs);
             } else {
                 SaveTo(filePath);
             }
         }
-        void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        void SaveAsCmdExecuted(object aTarget, IExecutedEventArgs aArgs)
         {
-            var dialog = new SaveFileDialog();
+            ISaveDialog dialog = toolkit.NewSaveDialog();
             if (dialog.ShowDialog() == true) {
                 SaveTo(dialog.FileName);
             }
         }
-        void SaveTo(string fileName)
+        void SaveTo(string aFileName)
         {
-            File.WriteAllText(fileName, textBox.Text);
-            FilePath = fileName;
+            File.WriteAllText(aFileName, textBox.Text);
+            FilePath = aFileName;
         }
-        void AlwaysCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        void AlwaysCanExecute(object aSender, ICanExecuteEventArgs aArgs)
         {
-            e.CanExecute = true;
-        }
-
-        class MenuDefinition : Tuple<string, MenuItemDefinition[]>
-        {
-            public MenuDefinition(string s, MenuItemDefinition[] items) : base(s, items) {}
+            aArgs.CanExecute = true;
         }
 
-        class MenuItemDefinition : Tuple<string, ICommand>
+        IMenuBar BuildMenuBar()
         {
-            static MenuItemDefinition separator = new MenuItemDefinition("", null);
-            public static MenuItemDefinition Separator {
-                get {
-                    return separator;
-                }
-            }
-            public MenuItemDefinition(string s, ICommand c) : base(s, c) {}
-        }
-
-        Menu BuildMenuBar()
-        {
-            var menuBar = new Menu();
-            DockPanel.SetDock(menuBar, Dock.Top);
-
             MenuDefinition[] menus = {
                 new MenuDefinition("ファイル(_F)", new MenuItemDefinition[] {
                     new MenuItemDefinition("新規(_N)", ApplicationCommands.New),
@@ -115,10 +106,10 @@ namespace Netapad
                     new MenuItemDefinition("上書き保存(_S)", ApplicationCommands.Save),
                     new MenuItemDefinition("名前を付けて保存(_A)...", ApplicationCommands.SaveAs),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(this)),
+                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(window)),
                     new MenuItemDefinition("印刷(_P)...", ApplicationCommands.Print),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(this)),
+                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(window)),
                 }),
                 new MenuDefinition("編集(_E)", new MenuItemDefinition[] {
                     new MenuItemDefinition("元に戻す(_U)", ApplicationCommands.Undo),
@@ -129,73 +120,54 @@ namespace Netapad
                     new MenuItemDefinition("削除(_L)", ApplicationCommands.Delete),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("検索(_F)...", ApplicationCommands.Find),
-                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(this)),
+                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(window)),
                     new MenuItemDefinition("置換(_R)...", ApplicationCommands.Replace),
-                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(this)),
+                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(window)),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("すべて選択(_A)", ApplicationCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(this)),
+                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(window)),
                 }),
             };
 
-            foreach (var menuDef in menus)
-            {
-                var menu = new MenuItem();
-                menu.Header = menuDef.Item1;
-
-                foreach (var item in menuDef.Item2)
-                {
-                    if (item == MenuItemDefinition.Separator) {
-                        menu.Items.Add(new Separator());
-                        continue;
-                    }
-                    var menuItem = new MenuItem();
-                    menuItem.Header = item.Item1;
-                    menuItem.Command = item.Item2;
-                    menu.Items.Add(menuItem);
-                }
-
-                menuBar.Items.Add(menu);
-            }
-            return menuBar;
+            return toolkit.NewMenuBar(menus);
         }
 
         class PageSettingsCommand : WindowCommand
         {
-            public PageSettingsCommand(Window w) : base(w) {}
-            public override void Execute(object parameter)
+            public PageSettingsCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class ExitCommand : WindowCommand
         {
-            public ExitCommand(Window w) : base(w) {}
-            public override void Execute(object parameter)
+            public ExitCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 window.Close();
             }
         }
         class FindNextCommand : WindowCommand
         {
-            public FindNextCommand(Window w) : base(w) {}
-            public override void Execute(object parameter)
+            public FindNextCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class GotoCommand : WindowCommand
         {
-            public GotoCommand(Window w) : base(w) {}
-            public override void Execute(object parameter)
+            public GotoCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
         }
         class DateTimeCommand : WindowCommand
         {
-            public DateTimeCommand(Window w) : base(w) {}
-            public override void Execute(object parameter)
+            public DateTimeCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
             {
                 // TODO
             }
@@ -205,17 +177,17 @@ namespace Netapad
         {
             public event EventHandler CanExecuteChanged { add {} remove {} }
 
-            protected Window window;
-            public WindowCommand(Window w)
+            protected IWindow window;
+            public WindowCommand(IWindow aWindow)
             {
-                window = w;
+                window = aWindow;
             }
 
-            public bool CanExecute(object parameter)
+            public bool CanExecute(object aParameter)
             {
                 return true;
             }
-            public abstract void Execute(object parameter);
+            public abstract void Execute(object aParameter);
         }
     }
 }
