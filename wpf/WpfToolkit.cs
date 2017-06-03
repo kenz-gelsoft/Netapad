@@ -28,5 +28,9 @@ namespace Netapad
         {
             return new WpfSaveDialog();
         }
+        public IAppCommand NewAppCommands()
+        {
+            return new WpfAppCommands();
+        }
     }
 }

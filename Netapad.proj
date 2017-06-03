@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="ifs\IAppCommands.cs" />
         <Compile Include="ifs\ICommandBinding.cs" />
         <Compile Include="ifs\IControl.cs" />
         <Compile Include="ifs\IMenuBar.cs" />
@@ -16,6 +17,18 @@
         <Compile Include="ifs\IToolkit.cs" />
         <Compile Include="ifs\IWindow.cs" />
         
+        <Compile Include="MacNetapad.cs" />
+        <Compile Include="Window.cs" />
+
+        <Reference Include="System" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="Xamarin.Mac" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(OS)' != 'Unix' ">
+        <Compile Include="wpf\WpfAppCommands.cs" />
         <Compile Include="wpf\WpfCommandBinding.cs" />
         <Compile Include="wpf\WpfMenuBar.cs" />
         <Compile Include="wpf\WpfOpenDialog.cs" />
@@ -25,15 +38,11 @@
         <Compile Include="wpf\WpfWindow.cs" />
 
         <Compile Include="Netapad.cs" />
-        <Compile Include="Window.cs" />
 
-        <Reference Include="System" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="WindowsBase" />
-        <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
     </ItemGroup>
 
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-    <Import Project="$(MSBuildBinPath)\Microsoft.WinFX.targets" />
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+    <Import Project="$(MSBuildBinPath)\Microsoft.WinFX.targets" Condition=" '$(OS)' != 'Unix' " />
 </Project>

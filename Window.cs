@@ -7,6 +7,7 @@ namespace Netapad
     class EditorWindow
     {
         IToolkit toolkit;
+        IAppCommands appCommands;
 
         IWindow  window;
         ITextBox textBox;
@@ -36,6 +37,7 @@ namespace Netapad
         public EditorWindow(IToolkit aToolkit)
         {
             toolkit = aToolkit;
+            appCommands = aToolkit.NewAppCommands();
             window  = aToolkit.NewWindow();
             textBox = aToolkit.NewTextBox();
 
@@ -45,13 +47,13 @@ namespace Netapad
             window.Add(textBox);
 
             ICommandBinding[] bindings = {
-                toolkit.NewCommandBinding(ApplicationCommands.New,
+                toolkit.NewCommandBinding(appCommands.New,
                     NewCmdExecuted, AlwaysCanExecute),
-                toolkit.NewCommandBinding(ApplicationCommands.Open,
+                toolkit.NewCommandBinding(appCommands.Open,
                     OpenCmdExecuted, AlwaysCanExecute),
-                toolkit.NewCommandBinding(ApplicationCommands.Save,
+                toolkit.NewCommandBinding(appCommands.Save,
                     SaveCmdExecuted, AlwaysCanExecute),
-                toolkit.NewCommandBinding(ApplicationCommands.SaveAs,
+                toolkit.NewCommandBinding(appCommands.SaveAs,
                     SaveAsCmdExecuted, AlwaysCanExecute),
             };
             foreach (var binding in bindings) {
@@ -101,30 +103,30 @@ namespace Netapad
         {
             MenuDefinition[] menus = {
                 new MenuDefinition("ファイル(_F)", new MenuItemDefinition[] {
-                    new MenuItemDefinition("新規(_N)", ApplicationCommands.New),
-                    new MenuItemDefinition("開く(_O)...", ApplicationCommands.Open),
-                    new MenuItemDefinition("上書き保存(_S)", ApplicationCommands.Save),
-                    new MenuItemDefinition("名前を付けて保存(_A)...", ApplicationCommands.SaveAs),
+                    new MenuItemDefinition("新規(_N)", appCommands.New),
+                    new MenuItemDefinition("開く(_O)...", appCommands.Open),
+                    new MenuItemDefinition("上書き保存(_S)", appCommands.Save),
+                    new MenuItemDefinition("名前を付けて保存(_A)...", appCommands.SaveAs),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(window)),
-                    new MenuItemDefinition("印刷(_P)...", ApplicationCommands.Print),
+                    new MenuItemDefinition("印刷(_P)...", appCommands.Print),
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(window)),
                 }),
                 new MenuDefinition("編集(_E)", new MenuItemDefinition[] {
-                    new MenuItemDefinition("元に戻す(_U)", ApplicationCommands.Undo),
+                    new MenuItemDefinition("元に戻す(_U)", appCommands.Undo),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("切り取り(_T)", ApplicationCommands.Cut),
-                    new MenuItemDefinition("コピー(_C)", ApplicationCommands.Copy),
-                    new MenuItemDefinition("貼り付け(_P)", ApplicationCommands.Paste),
-                    new MenuItemDefinition("削除(_L)", ApplicationCommands.Delete),
+                    new MenuItemDefinition("切り取り(_T)", appCommands.Cut),
+                    new MenuItemDefinition("コピー(_C)", appCommands.Copy),
+                    new MenuItemDefinition("貼り付け(_P)", appCommands.Paste),
+                    new MenuItemDefinition("削除(_L)", appCommands.Delete),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("検索(_F)...", ApplicationCommands.Find),
+                    new MenuItemDefinition("検索(_F)...", appCommands.Find),
                     new MenuItemDefinition("次を検索(_N)", new FindNextCommand(window)),
-                    new MenuItemDefinition("置換(_R)...", ApplicationCommands.Replace),
+                    new MenuItemDefinition("置換(_R)...", appCommands.Replace),
                     new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(window)),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("すべて選択(_A)", ApplicationCommands.SelectAll),
+                    new MenuItemDefinition("すべて選択(_A)", appCommands.SelectAll),
                     new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(window)),
                 }),
             };

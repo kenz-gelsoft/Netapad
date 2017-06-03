@@ -10,5 +10,6 @@ namespace Netapad
         ICommandBinding NewCommandBinding(ICommand aCommand, ExecutedEventHandler aExecuted, CanExecuteEventHandler aCanExecute);
         IOpenDialog NewOpenDialog();
         ISaveDialog NewSaveDialog();
+        IAppCommands NewAppCommands();
     }
 }
