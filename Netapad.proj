@@ -7,23 +7,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="ICommandBinding.cs" />
-        <Compile Include="IControl.cs" />
-        <Compile Include="IMenuBar.cs" />
-        <Compile Include="IOpenDialog.cs" />
-        <Compile Include="ISaveDialog.cs" />
-        <Compile Include="ITextBox.cs" />
-        <Compile Include="IToolkit.cs" />
-        <Compile Include="IWindow.cs" />
+        <Compile Include="ifs\ICommandBinding.cs" />
+        <Compile Include="ifs\IControl.cs" />
+        <Compile Include="ifs\IMenuBar.cs" />
+        <Compile Include="ifs\IOpenDialog.cs" />
+        <Compile Include="ifs\ISaveDialog.cs" />
+        <Compile Include="ifs\ITextBox.cs" />
+        <Compile Include="ifs\IToolkit.cs" />
+        <Compile Include="ifs\IWindow.cs" />
+        
+        <Compile Include="wpf\WpfCommandBinding.cs" />
+        <Compile Include="wpf\WpfMenuBar.cs" />
+        <Compile Include="wpf\WpfOpenDialog.cs" />
+        <Compile Include="wpf\WpfSaveDialog.cs" />
+        <Compile Include="wpf\WpfTextBox.cs" />
+        <Compile Include="wpf\WpfToolkit.cs" />
+        <Compile Include="wpf\WpfWindow.cs" />
+
         <Compile Include="Netapad.cs" />
         <Compile Include="Window.cs" />
-        <Compile Include="WpfCommandBinding.cs" />
-        <Compile Include="WpfMenuBar.cs" />
-        <Compile Include="WpfOpenDialog.cs" />
-        <Compile Include="WpfSaveDialog.cs" />
-        <Compile Include="WpfTextBox.cs" />
-        <Compile Include="WpfToolkit.cs" />
-        <Compile Include="WpfWindow.cs" />
 
         <Reference Include="System" />
         <Reference Include="System.Xaml" />
