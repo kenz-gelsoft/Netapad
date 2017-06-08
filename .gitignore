@@ -1,6 +1,2 @@
-*.cache
-*.dll
-*.exe
-*.FileListAbsolute.txt
-*.nlp
-*.pdb
+/bin/
+/obj/
