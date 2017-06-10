@@ -41,7 +41,7 @@ namespace Netapad
             if (insertPosition < 0) {
                 insertPosition = aLabel.Length;
             }
-            return aLabel.Insert(insertPosition, '(' + aMnemonic + ')');
+            return aLabel.Insert(insertPosition, String.Format("(_{0})", aMnemonic));
         }
     }
 }
