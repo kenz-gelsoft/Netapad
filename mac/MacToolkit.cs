@@ -1,9 +1,20 @@
+using AppKit;
 using System.Windows.Input;
 
 namespace Netapad
 {
-    class MacToolkit : IToolkit
+    class MacToolkit : NSApplicationDelegate, IToolkit
     {
+        public MacToolkit()
+        {
+            NSApplication.SharedApplication.Delegate = this;
+        }
+
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
+        {
+            return true;
+        }
+
         public IWindow NewWindow()
         {
             return new MacWindow();
