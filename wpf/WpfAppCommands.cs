@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Netapad
 {
-    class WpfAppCommands
+    class WpfAppCommands : IAppCommands
     {
         public ICommand New {
             get {
