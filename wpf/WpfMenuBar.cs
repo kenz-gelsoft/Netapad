@@ -16,6 +16,12 @@ namespace Netapad
             DockPanel.SetDock(menuBar, Dock.Top);
             foreach (var menuDef in aMenus)
             {
+                if (String.IsNullOrEmpty(menuDef.Item1)) {
+                    // ラベルが空のメニューはMac用のアプリケーションメニューとして
+                    // 無視しています。
+                    continue;
+                }
+
                 var menu = new MenuItem();
                 menu.Header = LabelWithMnemonic(menuDef.Item1, menuDef.Item2);
 
