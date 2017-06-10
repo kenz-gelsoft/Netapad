@@ -102,6 +102,11 @@ namespace Netapad
         IMenuBar BuildMenuBar()
         {
             MenuDefinition[] menus = {
+                new MenuDefinition("", "", new MenuItemDefinition[] {
+                    new MenuItemDefinition("ネタ帳について", "A", new AboutCommand(window)),
+                    MenuItemDefinition.Separator,
+                    new MenuItemDefinition("ネタ帳の終了", "X", new ExitCommand(window)),
+                }),
                 new MenuDefinition("ファイル", "F", new MenuItemDefinition[] {
                     new MenuItemDefinition("新規", "N", appCommands.New),
                     new MenuItemDefinition("開く...", "O", appCommands.Open),
@@ -134,6 +139,14 @@ namespace Netapad
             return toolkit.NewMenuBar(menus);
         }
 
+        class AboutCommand : WindowCommand
+        {
+            public AboutCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
+            {
+                // TODO
+            }
+        }
         class PageSettingsCommand : WindowCommand
         {
             public PageSettingsCommand(IWindow aWindow) : base(aWindow) {}
