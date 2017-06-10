@@ -102,32 +102,32 @@ namespace Netapad
         IMenuBar BuildMenuBar()
         {
             MenuDefinition[] menus = {
-                new MenuDefinition("ファイル(_F)", new MenuItemDefinition[] {
-                    new MenuItemDefinition("新規(_N)", appCommands.New),
-                    new MenuItemDefinition("開く(_O)...", appCommands.Open),
-                    new MenuItemDefinition("上書き保存(_S)", appCommands.Save),
-                    new MenuItemDefinition("名前を付けて保存(_A)...", appCommands.SaveAs),
+                new MenuDefinition("ファイル", "F", new MenuItemDefinition[] {
+                    new MenuItemDefinition("新規", "N", appCommands.New),
+                    new MenuItemDefinition("開く...", "O", appCommands.Open),
+                    new MenuItemDefinition("上書き保存", "S", appCommands.Save),
+                    new MenuItemDefinition("名前を付けて保存...", "A", appCommands.SaveAs),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ページ設定(_U)...", new PageSettingsCommand(window)),
-                    new MenuItemDefinition("印刷(_P)...", appCommands.Print),
+                    new MenuItemDefinition("ページ設定...", "U", new PageSettingsCommand(window)),
+                    new MenuItemDefinition("印刷...", "P", appCommands.Print),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了(_X)", new ExitCommand(window)),
+                    new MenuItemDefinition("ネタ帳の終了", "X", new ExitCommand(window)),
                 }),
-                new MenuDefinition("編集(_E)", new MenuItemDefinition[] {
-                    new MenuItemDefinition("元に戻す(_U)", appCommands.Undo),
+                new MenuDefinition("編集", "E", new MenuItemDefinition[] {
+                    new MenuItemDefinition("元に戻す", "U", appCommands.Undo),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("切り取り(_T)", appCommands.Cut),
-                    new MenuItemDefinition("コピー(_C)", appCommands.Copy),
-                    new MenuItemDefinition("貼り付け(_P)", appCommands.Paste),
-                    new MenuItemDefinition("削除(_L)", appCommands.Delete),
+                    new MenuItemDefinition("切り取り", "T", appCommands.Cut),
+                    new MenuItemDefinition("コピー", "C", appCommands.Copy),
+                    new MenuItemDefinition("貼り付け", "P", appCommands.Paste),
+                    new MenuItemDefinition("削除", "L", appCommands.Delete),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("検索(_F)...", appCommands.Find),
-                    new MenuItemDefinition("次を検索(_N)", new FindNextCommand(window)),
-                    new MenuItemDefinition("置換(_R)...", appCommands.Replace),
-                    new MenuItemDefinition("行へ移動(_G)...", new GotoCommand(window)),
+                    new MenuItemDefinition("検索...", "F", appCommands.Find),
+                    new MenuItemDefinition("次を検索", "N", new FindNextCommand(window)),
+                    new MenuItemDefinition("置換...", "R", appCommands.Replace),
+                    new MenuItemDefinition("行へ移動...", "G", new GotoCommand(window)),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("すべて選択(_A)", appCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻(_D)...", new DateTimeCommand(window)),
+                    new MenuItemDefinition("すべて選択", "A", appCommands.SelectAll),
+                    new MenuItemDefinition("日付と時刻...", "D", new DateTimeCommand(window)),
                 }),
             };
 

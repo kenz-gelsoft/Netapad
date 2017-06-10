@@ -19,7 +19,7 @@ namespace Netapad
                 var submenu = new NSMenu(menuDef.Item1);
                 menuItem.Submenu = submenu;
 
-                foreach (var item in menuDef.Item2)
+                foreach (var item in menuDef.Item3)
                 {
                     if (item == MenuItemDefinition.Separator) {
                         submenu.AddItem(NSMenuItem.SeparatorItem);
