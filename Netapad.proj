@@ -19,16 +19,6 @@
         <Compile Include="ifs\IToolkit.cs" />
         <Compile Include="ifs\IWindow.cs" />
         
-        <Compile Include="mac\MacAppCommands.cs" />
-        <Compile Include="mac\MacCommandBinding.cs" />
-        <Compile Include="mac\MacMenuBar.cs" />
-        <Compile Include="mac\MacOpenDialog.cs" />
-        <Compile Include="mac\MacSaveDialog.cs" />
-        <Compile Include="mac\MacTextBox.cs" />
-        <Compile Include="mac\MacToolkit.cs" />
-        <Compile Include="mac\MacWindow.cs" />
-        
-        <Compile Include="MacNetapad.cs" />
         <Compile Include="Window.cs" />
 
         <Reference Include="System" />
@@ -55,7 +45,21 @@
         <Reference Include="PresentationFramework" />
     </ItemGroup>
 
-    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+    <ItemGroup Condition=" '$(OS)' == 'Unix' ">
+        <Compile Include="mac\MacAppCommands.cs" />
+        <Compile Include="mac\MacCommandBinding.cs" />
+        <Compile Include="mac\MacMenuBar.cs" />
+        <Compile Include="mac\MacOpenDialog.cs" />
+        <Compile Include="mac\MacSaveDialog.cs" />
+        <Compile Include="mac\MacTextBox.cs" />
+        <Compile Include="mac\MacToolkit.cs" />
+        <Compile Include="mac\MacWindow.cs" />
+        
+        <Compile Include="MacNetapad.cs" />
+    </ItemGroup>
+
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets"
+            Condition=" '$(OS)' == 'Unix' " />
     <ImportGroup Condition=" '$(OS)' != 'Unix' ">
         <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
         <Import Project="$(MSBuildBinPath)\Microsoft.WinFX.targets" />
