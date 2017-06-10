@@ -1,9 +1,32 @@
 using AppKit;
+using Foundation;
+using ObjCRuntime;
 using System;
 using System.Windows.Input;
 
 namespace Netapad
 {
+    class CommandTargetAdapter : NSObject
+    {
+        ICommand command;
+        public CommandTargetAdapter(ICommand aCommand)
+        {
+            command = aCommand;
+        }
+
+        [Action("execute:")]
+        public void defineKeyword (NSObject sender) {
+            command.Execute(sender);
+        }
+
+        [Action("validateMenuItem:")]
+        public bool ValidateMenuItem (NSMenuItem item) {
+            // sender として何を送るべきか分からないので、
+            // とりあえず null を送信しています。
+            return command.CanExecute(null);
+        }
+    }
+
     class MacMenuBar : IMenuBar, IMacControl
     {
         NSMenu menuBar = new NSMenu();
@@ -26,6 +49,8 @@ namespace Netapad
                         continue;
                     }
                     var submenuItem = new NSMenuItem(item.Item1);
+                    submenuItem.Target = new CommandTargetAdapter(item.Item3);
+                    submenuItem.Action = new Selector("execute:");
                     submenu.AddItem(submenuItem);
                 }
 
