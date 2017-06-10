@@ -3,6 +3,9 @@
     // for the documentation about the tasks.json format
     "version": "0.1.0",
     "command": "xbuild",
+    "windows":{
+        "command": "build.bat"
+    },
     "args": [
         // Ask msbuild to generate full paths for file names.
         "/property:GenerateFullPaths=true"
