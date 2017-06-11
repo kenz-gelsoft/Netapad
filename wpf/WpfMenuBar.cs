@@ -33,7 +33,7 @@ namespace Netapad
                     }
                     var menuItem = new MenuItem();
                     menuItem.Header = LabelWithMnemonic(item.Item1, item.Item2);
-                    menuItem.Command = item.Item3;
+                    menuItem.Command = item.Item4;
                     menu.Items.Add(menuItem);
                 }
 
