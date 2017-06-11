@@ -13,7 +13,7 @@ namespace Netapad
 
         public bool? ShowDialog()
         {
-            return 0 > dialog.RunModal();
+            return 0 < dialog.RunModal();
         }
     }
 }
