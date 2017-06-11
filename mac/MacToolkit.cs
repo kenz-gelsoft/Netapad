@@ -39,9 +39,9 @@ namespace Netapad
         {
             return new MacSaveDialog();
         }
-        public IAppCommands NewAppCommands()
+        public IAppCommands NewAppCommands(EditorWindow aWindow)
         {
-            return new MacAppCommands();
+            return new MacAppCommands(aWindow);
         }
     }
 }

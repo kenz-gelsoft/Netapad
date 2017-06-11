@@ -11,6 +11,7 @@ namespace Netapad
 
         IWindow  window;
         ITextBox textBox;
+        public ITextBox TextBox { get { return textBox; } }
 
         public object Handle
         {
@@ -37,7 +38,7 @@ namespace Netapad
         public EditorWindow(IToolkit aToolkit)
         {
             toolkit = aToolkit;
-            appCommands = aToolkit.NewAppCommands();
+            appCommands = aToolkit.NewAppCommands(this);
             window  = aToolkit.NewWindow();
             textBox = aToolkit.NewTextBox();
 
