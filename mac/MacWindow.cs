@@ -1,5 +1,6 @@
 using AppKit;
 using CoreGraphics;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -36,9 +37,18 @@ namespace Netapad
             (aControl as IMacControl).AddToWindow(this);
         }
 
+        Dictionary<ICommand, MacCommandBinding> mBindings = new Dictionary<ICommand, MacCommandBinding>();
         public void AddCommandBinding(ICommandBinding aBinding)
         {
-            // window.CommandBindings.Add(aBinding.Handle as CommandBinding);
+            var macBinding = aBinding as MacCommandBinding;
+            mBindings[macBinding.Command] = macBinding;
+        }
+        public ICommand BindingOrCommand(ICommand aCommand)
+        {
+            MacCommandBinding found = null;
+            return mBindings.TryGetValue(aCommand, out found)
+                ? found
+                : aCommand;
         }
 
         public void Close()

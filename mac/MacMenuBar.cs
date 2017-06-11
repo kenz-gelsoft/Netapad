@@ -8,22 +8,25 @@ namespace Netapad
 {
     class CommandTargetAdapter : NSObject
     {
+        MacMenuBar parent;
+
         ICommand command;
-        public CommandTargetAdapter(ICommand aCommand)
+        public CommandTargetAdapter(MacMenuBar aParent, ICommand aCommand)
         {
+            parent  = aParent;
             command = aCommand;
         }
 
         [Action("execute:")]
-        public void defineKeyword (NSObject sender) {
-            command.Execute(sender);
+        public void Execute(NSObject sender) {
+            parent.BindingOrCommand(command).Execute(sender);
         }
 
         [Action("validateMenuItem:")]
         public bool ValidateMenuItem (NSMenuItem item) {
             // sender として何を送るべきか分からないので、
             // とりあえず null を送信しています。
-            return command.CanExecute(null);
+            return parent.BindingOrCommand(command).CanExecute(null);
         }
     }
 
@@ -49,7 +52,7 @@ namespace Netapad
                         continue;
                     }
                     var submenuItem = new NSMenuItem(item.Item1);
-                    submenuItem.Target = new CommandTargetAdapter(item.Item3);
+                    submenuItem.Target = new CommandTargetAdapter(this, item.Item3);
                     submenuItem.Action = new Selector("execute:");
                     submenu.AddItem(submenuItem);
                 }
@@ -58,10 +61,16 @@ namespace Netapad
             }
         }
 
+        MacWindow attachedWindow;
         public void AddToWindow(MacWindow aWindow)
         {
+            attachedWindow = aWindow;
             // TODO メニューバーの設定はアプリケーション単位にした方がよさそう
             NSApplication.SharedApplication.MainMenu = menuBar;
+        }
+        public ICommand BindingOrCommand(ICommand aCommand)
+        {
+            return attachedWindow.BindingOrCommand(aCommand);
         }
     }
 }
