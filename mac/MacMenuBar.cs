@@ -52,13 +52,30 @@ namespace Netapad
                         continue;
                     }
                     var submenuItem = new NSMenuItem(item.Item1);
-                    submenuItem.Target = new CommandTargetAdapter(this, item.Item3);
+                    submenuItem.Target = new CommandTargetAdapter(this, item.Item4);
                     submenuItem.Action = new Selector("execute:");
+                    var shortcut = item.Item3;
+                    if (shortcut != null) {
+                        submenuItem.KeyEquivalent = shortcut.Key.ToLower();
+                        submenuItem.KeyEquivalentModifierMask = ToCocoaMask(shortcut.Modifiers);
+                    }
                     submenu.AddItem(submenuItem);
                 }
 
                 menuBar.AddItem(menuItem);
             }
+        }
+
+        NSEventModifierMask ToCocoaMask(int aModifiers)
+        {
+            NSEventModifierMask mask = 0;
+            if ((aModifiers & Shortcut.SHIFT) != 0) {
+                mask |= NSEventModifierMask.ShiftKeyMask;
+            }
+            if ((aModifiers & Shortcut.CTRL) != 0) {
+                mask |= NSEventModifierMask.CommandKeyMask;
+            }
+            return mask;
         }
 
         MacWindow attachedWindow;

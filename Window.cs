@@ -103,36 +103,42 @@ namespace Netapad
         {
             MenuDefinition[] menus = {
                 new MenuDefinition("", "", new MenuItemDefinition[] {
-                    new MenuItemDefinition("ネタ帳について", "A", new AboutCommand(window)),
+                    new MenuItemDefinition("ネタ帳について", "A", null, new AboutCommand(window)),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了", "X", new ExitCommand(window)),
+                    new MenuItemDefinition("ネタ帳の終了", "X", null, new ExitCommand(window)),
+                    MenuItemDefinition.Separator,
+                    new MenuItemDefinition("ネタ帳の終了", "X", Shortcut.Ctrl("Q"), new ExitCommand(window)),
                 }),
                 new MenuDefinition("ファイル", "F", new MenuItemDefinition[] {
-                    new MenuItemDefinition("新規", "N", appCommands.New),
-                    new MenuItemDefinition("開く...", "O", appCommands.Open),
-                    new MenuItemDefinition("上書き保存", "S", appCommands.Save),
-                    new MenuItemDefinition("名前を付けて保存...", "A", appCommands.SaveAs),
+                    new MenuItemDefinition("新規", "N", Shortcut.Ctrl("N"), appCommands.New),
+                    new MenuItemDefinition("開く...", "O", Shortcut.Ctrl("O"), appCommands.Open),
+                    new MenuItemDefinition("上書き保存", "S", Shortcut.Ctrl("S"), appCommands.Save),
+                    new MenuItemDefinition("名前を付けて保存...", "A", Shortcut.ShiftCtrl("S"), appCommands.SaveAs),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ページ設定...", "U", new PageSettingsCommand(window)),
-                    new MenuItemDefinition("印刷...", "P", appCommands.Print),
+                    new MenuItemDefinition("ページ設定...", "U", Shortcut.ShiftCtrl("P"), new PageSettingsCommand(window)),
+                    new MenuItemDefinition("印刷...", "P", Shortcut.Ctrl("P"), appCommands.Print),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("ネタ帳の終了", "X", new ExitCommand(window)),
+                    new MenuItemDefinition("ネタ帳の終了", "X", null, new ExitCommand(window)),
                 }),
                 new MenuDefinition("編集", "E", new MenuItemDefinition[] {
-                    new MenuItemDefinition("元に戻す", "U", appCommands.Undo),
+                    new MenuItemDefinition("元に戻す", "U", Shortcut.Ctrl("Z"), appCommands.Undo),
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("切り取り", "T", appCommands.Cut),
-                    new MenuItemDefinition("コピー", "C", appCommands.Copy),
-                    new MenuItemDefinition("貼り付け", "P", appCommands.Paste),
-                    new MenuItemDefinition("削除", "L", appCommands.Delete),
+                    new MenuItemDefinition("切り取り", "T", Shortcut.Ctrl("X"), appCommands.Cut),
+                    new MenuItemDefinition("コピー", "C", Shortcut.Ctrl("C"), appCommands.Copy),
+                    new MenuItemDefinition("貼り付け", "P", Shortcut.Ctrl("V"), appCommands.Paste),
+                    new MenuItemDefinition("削除", "L", null, appCommands.Delete), // TODO: Delete キー
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("検索...", "F", appCommands.Find),
-                    new MenuItemDefinition("次を検索", "N", new FindNextCommand(window)),
-                    new MenuItemDefinition("置換...", "R", appCommands.Replace),
-                    new MenuItemDefinition("行へ移動...", "G", new GotoCommand(window)),
+                    new MenuItemDefinition("検索...", "F", Shortcut.Ctrl("F"), appCommands.Find),
+                    new MenuItemDefinition("次を検索", "N", Shortcut.Ctrl("G"), new FindNextCommand(window)),
+                    // TODO: Windows と Mac とでショートカットキーが異なるべき
+                    new MenuItemDefinition("置換...", "R", Shortcut.Ctrl("H"), appCommands.Replace),
+                    // TODO: Mac 的なショートカットキーが必要？
+                    new MenuItemDefinition("行へ移動...", "G", Shortcut.Ctrl("L"), new GotoCommand(window)),
+                    // TODO: メモ帳では Ctrl+G だったような気がする。そのあたり要調整。
                     MenuItemDefinition.Separator,
-                    new MenuItemDefinition("すべて選択", "A", appCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻...", "D", new DateTimeCommand(window)),
+                    new MenuItemDefinition("すべて選択", "A", Shortcut.Ctrl("A"), appCommands.SelectAll),
+                    new MenuItemDefinition("日付と時刻...", "D", null, new DateTimeCommand(window)),
+                    // TODO: F5 だった気がする
                 }),
             };
 
