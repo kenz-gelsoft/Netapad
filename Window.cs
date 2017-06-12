@@ -141,12 +141,16 @@ namespace Netapad
                     new MenuItemDefinition("日付と時刻...", "D", null, new DateTimeCommand(window)),
                     // TODO: F5 だった気がする
                 }),
+                new MenuDefinition("書式", "O", new MenuItemDefinition[] {
+                    new MenuItemDefinition("右端で折り返す", "W", null, new WrapCommand(textBox)),
+                    new MenuItemDefinition("フォント...", "F", null, new FontCommand(window)),
+                }),
             };
 
             return toolkit.NewMenuBar(menus);
         }
 
-        class AboutCommand : WindowCommand
+        class AboutCommand : ControlCommand<IWindow>
         {
             public AboutCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
@@ -154,7 +158,7 @@ namespace Netapad
                 // TODO
             }
         }
-        class PageSettingsCommand : WindowCommand
+        class PageSettingsCommand : ControlCommand<IWindow>
         {
             public PageSettingsCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
@@ -162,15 +166,15 @@ namespace Netapad
                 // TODO
             }
         }
-        class ExitCommand : WindowCommand
+        class ExitCommand : ControlCommand<IWindow>
         {
             public ExitCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
             {
-                window.Close();
+                control.Close();
             }
         }
-        class FindNextCommand : WindowCommand
+        class FindNextCommand : ControlCommand<IWindow>
         {
             public FindNextCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
@@ -178,7 +182,7 @@ namespace Netapad
                 // TODO
             }
         }
-        class GotoCommand : WindowCommand
+        class GotoCommand : ControlCommand<IWindow>
         {
             public GotoCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
@@ -186,7 +190,7 @@ namespace Netapad
                 // TODO
             }
         }
-        class DateTimeCommand : WindowCommand
+        class DateTimeCommand : ControlCommand<IWindow>
         {
             public DateTimeCommand(IWindow aWindow) : base(aWindow) {}
             public override void Execute(object aParameter)
@@ -194,15 +198,31 @@ namespace Netapad
                 // TODO
             }
         }
+        class WrapCommand : ControlCommand<ITextBox>
+        {
+            public WrapCommand(ITextBox aTextBox) : base(aTextBox) {}
+            public override void Execute(object aParameter)
+            {
+                control.Wrap = !control.Wrap;
+            }
+        }
+        class FontCommand : ControlCommand<IWindow>
+        {
+            public FontCommand(IWindow aWindow) : base(aWindow) {}
+            public override void Execute(object aParameter)
+            {
+                // TODO
+            }
+        }
 
-        abstract class WindowCommand : ICommand
+        abstract class ControlCommand<T> : ICommand
         {
             public event EventHandler CanExecuteChanged { add {} remove {} }
 
-            protected IWindow window;
-            public WindowCommand(IWindow aWindow)
+            protected T control;
+            public ControlCommand(T aControl)
             {
-                window = aWindow;
+                control = aControl;
             }
 
             public bool CanExecute(object aParameter)

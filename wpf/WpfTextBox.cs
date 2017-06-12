@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Netapad
@@ -20,9 +21,24 @@ namespace Netapad
             }
         }
 
+        public bool Wrap {
+            get {
+                return textBox.TextWrapping == TextWrapping.Wrap;
+            }
+            set {
+                textBox.TextWrapping = value
+                    ? TextWrapping.Wrap
+                    : TextWrapping.NoWrap;
+                textBox.HorizontalScrollBarVisibility = value
+                    ? ScrollBarVisibility.Disabled
+                    : ScrollBarVisibility.Auto;
+            }
+        }
+
         public WpfTextBox()
         {
             textBox.AcceptsReturn = true;
+            Wrap = false;
         }
     }
 }
