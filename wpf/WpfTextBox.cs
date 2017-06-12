@@ -31,13 +31,13 @@ namespace Netapad
                     : TextWrapping.NoWrap;
                 textBox.HorizontalScrollBarVisibility = value
                     ? ScrollBarVisibility.Disabled
-                    : ScrollBarVisibility.Auto;
+                    : ScrollBarVisibility.Visible;
             }
         }
 
         public WpfTextBox()
         {
-            textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             textBox.AcceptsReturn = true;
             Wrap = false;
         }
