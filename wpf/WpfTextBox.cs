@@ -37,6 +37,7 @@ namespace Netapad
 
         public WpfTextBox()
         {
+            textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.AcceptsReturn = true;
             Wrap = false;
         }
