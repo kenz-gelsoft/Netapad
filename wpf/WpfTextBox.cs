@@ -41,5 +41,12 @@ namespace Netapad
             textBox.AcceptsReturn = true;
             Wrap = false;
         }
+
+        public void Insert(string aText)
+        {
+            var selectionIndex = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Insert(selectionIndex, aText);
+            textBox.SelectionStart = selectionIndex + aText.Length;
+        }
     }
 }

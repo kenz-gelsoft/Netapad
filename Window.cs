@@ -138,7 +138,7 @@ namespace Netapad
                     // TODO: メモ帳では Ctrl+G だったような気がする。そのあたり要調整。
                     MenuItemDefinition.Separator,
                     new MenuItemDefinition("すべて選択", "A", Shortcut.Ctrl("A"), appCommands.SelectAll),
-                    new MenuItemDefinition("日付と時刻...", "D", null, new DateTimeCommand(window)),
+                    new MenuItemDefinition("日付と時刻...", "D", null, new DateTimeCommand(textBox)),
                     // TODO: F5 だった気がする
                 }),
                 new MenuDefinition("書式", "O", new MenuItemDefinition[] {
@@ -190,12 +190,12 @@ namespace Netapad
                 // TODO
             }
         }
-        class DateTimeCommand : ControlCommand<IWindow>
+        class DateTimeCommand : ControlCommand<ITextBox>
         {
-            public DateTimeCommand(IWindow aWindow) : base(aWindow) {}
+            public DateTimeCommand(ITextBox aTextBox) : base(aTextBox) {}
             public override void Execute(object aParameter)
             {
-                // TODO
+                control.Insert(DateTime.Now.ToString());
             }
         }
         class WrapCommand : ControlCommand<ITextBox>

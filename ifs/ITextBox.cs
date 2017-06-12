@@ -4,5 +4,7 @@ namespace Netapad
     {
         string Text { get; set; }
         bool Wrap { get; set; }
+
+        void Insert(string aText);
     }
 }
